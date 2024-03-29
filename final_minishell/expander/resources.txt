@@ -1,0 +1,259 @@
+signals :
+https://indradhanush.github.io/blog/writing-a-unix-shell-part-3/
+https://www.geeksforgeeks.org/signals-c-language/
+https://www.tutorialspoint.com/c_standard_library/c_function_signal.htm
+https://stackoverflow.com/questions/1516122/how-to-capture-controld-signal
+https://www.ibm.com/docs/en/i/7.4?topic=ssw_ibm_i_74/apis/sigkill.html --> ctrl c sigkill
+https://docstore.mik.ua/orelly/networking/puis/appc_04.htm -> kill command
+
+
+// Handling signals in a Bash reimplementation involves setting up signal handlers to respond to specific signals sent to the shell process. Here's a general approach:
+
+//     Identify Signals to Handle: Determine which signals you want your shell to handle. Common signals include SIGINT (interrupt from keyboard, typically Ctrl+C), SIGTSTP (terminal stop signal, typically Ctrl+Z), SIGQUIT (quit signal, typically Ctrl+), and SIGCHLD (child process status change).
+
+//     Set Up Signal Handlers: Use the signal() or sigaction() function to set up signal handlers for the signals you want to handle. These handlers will define what action the shell should take when it receives each signal.
+
+//     Define Signal Handler Functions: Write functions to serve as the signal handlers. These functions will be called when the corresponding signal is received. Inside these functions, you can define the desired behavior for each signal.
+
+//     Register Signal Handlers: Register the signal handlers with the appropriate signals using signal() or sigaction().
+
+//     Handle Signals Appropriately: Inside each signal handler function, implement the desired behavior for the corresponding signal. This may include exiting the shell, ignoring the signal, or taking specific actions based on the signal received.
+
+// Here's a basic example in C:
+
+builtins :
+cd : https://stackoverflow.com/questions/298510/how-to-get-the-current-directory-in-a-c-program
+
+// echo hello users 'hi' how are you '$USER' doing $SHELL $USERT oh $hey jjk
+// echo hello users 'hi' $?GFG$123 orhh $SHELL $tacruquoi
+// valgrind --leak-check=full --track-origins=yes ./lumumbash 2>&1 | tee valgrind.txt
+
+
+
+for export :
+
+unset HOME - cd ~
+
+handle creating a var without no assignation (value)
+fix all of the edge cases
+edge cases export 
+export var=$SHELL OK
+export var="echo hello" OK
+export var="echo $USER" OK
+export "" test=a -> OK minishell: export: ": not a valid identifier
+export -> should show all of the exported variables
+export test= --> should be displayed in env and in export
+
+for expander:
+fix echo "$USER" OK
+fix double quotes handling OK
+
+left to do :
+
+- fix the signals
+- update all of the exit statuses
+
+if the token starts with dollar check 
+
+je peux avoir une liste export et check en premier lieu dans cette liste
+je vais checker ce que le tokenizer donne comme valeur
+
+en gros si je repere une des variables exportees dans mon token je vais l'e
+
+le seul moyen d'export une commande dans une variable envrionnement c'est avec des quotes;
+
+a faire :
+
+store la new env var en ayant enleve les quotes
+check si 
+
+ce que je peux recevoir :
+export var="echo hello" -> tokens : export, var="echo hello"
+export $var="export ls $USER" --> si j'ai ca mes tokens : export, $var="export ls $USER" et export va recevoir ca $var="export ls $USER" , si je split l'input export var=
+-->verifier au debut du token si les premieres lettres jusqua un espace ou un egal sont bien une env var si oui je tokenize en mettant la env var a part, le = a part si il est nex to the end of the env var, le
+$var --> tokens : $var
+echo$var$var -> tokens : $var$var
+$var$USER -> tokens : $var$var=hello=
+echo $var -> tokens : echo, $var
+export var=" ls" - echo$var
+
+
+aguede@c4c2c4:~$ export var="ls "
+aguede@c4c2c4:~$ $var-l
+total 16
+drwxr-xr-x  8 aguede 2022_berlin  187 Nov  9 12:06  42-EXAM
+drwxr-xr-x  2 aguede 2022_berlin    6 Nov  8 12:39  Desktop
+drwxr-xr-x 27 aguede 2022_berlin 4096 Mar 27 22:30  Documents
+drwxr-xr-x  6 aguede 2022_berlin  168 Mar 27 22:11  Downloads
+lrwxrwxrwx  1 aguede 2022_berlin   15 Mar 28 10:32  goinfre -> /goinfre/aguede
+-rw-r--r--  1 aguede 2022_berlin  102 Nov  9 10:09  infile
+drwxr-xr-x  2 aguede 2022_berlin    6 Nov  8 12:39  Music
+drwxr-xr-x  4 aguede 2022_berlin   57 Nov  8 16:02  philofinal
+drwxr-xr-x  3 aguede 2022_berlin   25 Mar 27 12:53  Pictures
+drwxr-xr-x  3 aguede 2022_berlin   19 Dec 13 07:26  Postman
+drwxr-xr-x  2 aguede 2022_berlin    6 Nov  8 12:39  Public
+-rw-r--r--  1 aguede 2022_berlin 7666 Mar 26 16:00 'safety export'
+lrwxrwxrwx  1 aguede 2022_berlin   30 Mar 28 10:32  sgoinfre -> /sgoinfre/goinfre/Perso/aguede
+drwxr-xr-x  2 aguede 2022_berlin    6 Nov  8 12:39  Templates
+drwxr-xr-x  4 aguede 2022_berlin   31 Nov 11 14:14  testfinal
+drwxr-xr-x  2 aguede 2022_berlin    6 Nov  8 12:39  Videos
+aguede@c4c2c4:~$ 
+
+a bit too much :
+export var="echo hello" - export $var=test --> lorsquon tape export on a echo tt seul et hello="test" sur la ligne d'apres. dans env on a juste hello=test
+env var not in the 
+
+
+// int	ft_info_env_var(char *str, char **p1)
+// {
+// 	int i;
+// 	int flag;
+// 	char	*first_part;
+	
+// 	i = 0;
+// 	while(str[i] != 0 || flag > 0)
+// 	{
+// 		if (str[i] == '=')
+// 			flag = 1;
+// 		if (str[i] == '$')
+// 			flag == 2;
+// 		if (flag == 0)
+// 			i++;
+// 	}
+// 	if (str[i] == 0)
+// 		return(0);
+// 	if (flag == 1)
+// 		return(1);
+// 	if (flag == 2)
+// 		return(2);
+// }
+
+// char	*ft_take_part(char *str, char c, int n)
+// {
+// 	char *str_dup;
+// 	int	i;
+// 	int j;
+
+// 	i = 0;
+// 	j = 0;
+// 	if (n == 1)
+// 	{
+// 		while(str[i] != c)
+// 			i++;
+// 		str_dup = ft_calloc(i + 1, 8);
+// 		i = 0;
+// 		while(str[i] != c)
+// 		{
+// 			str_dup[i] = str[i];
+// 			i++;
+// 		}
+// 		str_dup[i] = 0;
+// 	}
+// 	if (n == 2)
+// 	{
+// 		while(str[i] != c)
+// 			i++;
+// 		str_dup = ft_calloc(i + 1, 8);
+// 		while(str[i] != 0)
+// 		{
+// 			str_dup[j] = str[i + j];
+// 			j++;
+// 		}
+// 		str_dup[j] = 0;
+// 	}
+// 	return (str_dup);
+// }
+
+// t_two_strings	ft_get_env(int flag, char *str)
+// {
+// 	t_two_strings	both_parts;
+
+// 	if(flag == 0)
+// 	{
+// 		both_parts.to_keep = NULL;
+// 		both_parts.to_verif = NULL;
+// 	}
+// 	if(flag == 1)
+// 	{
+// 		both_parts.to_keep = ft_take_part(str, '$', 1);
+// 		both_parts.to_verif = ft_take_part(str, '$', 2);
+// 	}
+// 	if(flag == 2)
+// 	{
+// 		both_parts.to_keep = ft_take_part(str, '=', 1);
+// 		both_parts.to_verif = ft_take_part(str, '=', 2);
+// 	}
+// 	return(both_parts);
+// 	// how to free the strings inside ?
+// }
+
+// int check_if_space(char *str)
+// {
+// 	int i;
+
+// 	i = 0;
+// 	while(str[i] != 0)
+// 	{
+// 		if(ft_isspace(str[i]))
+// 			return(1);
+// 		i++;
+// 	}
+// 	return (0);
+// }
+
+// void	check_export(char *str, char **p1, char **p2, t_token *tokens)
+// {
+// 	int i;
+// 	t_two_strings	both_parts;
+// 	char	*second_part;
+
+// 	i = 0;
+// 	if(str[0] == '$')
+// 	{
+// 		//both_parts = ft_get_env(ft_double_strdup(),ft_info_env_var(str, p1), str);
+// 		// if the way we split is ending with a dollar then we will split again
+// 		// split the word until I find another dollar or keep it that way if no $ until the end /? do a recursion if multiple dollars -> if none of the rest have to be splitted we keep them that way
+// 		// check with this word if it exists in the env lists -> if no -> just return 0 / if yes check if the second part has multiple words (one of the char is isspace) / if yes then we have to expand it and then tokenize it the way it is done in the tokenizer and add the tokens in the current token list
+	
+// 		if (both_parts.to_keep[i] != NULL)
+// 		{
+// 			while (p1[i] != NULL)
+// 			{
+// 				if (ft_strncmp(both_parts.to_keep + 1, p1[i], ft_strlen(p1[i])) == 0)
+// 					break ;
+// 				i++;
+// 			}
+// 			if (p1[i] != NULL && check_if_space(p2[i]))
+// 			{
+// 				ft_tokenize(p2[i]); // ! the issue is that it creates always a space between token if I am right
+// 				add_token(ft_tokenize(p2[i]), tokens); // todo and add the tokens to the current list;
+// 				remove_current_token();
+// 				free(both_parts.to_keep);
+// 				free(str);
+// 				// ! what is then sent to the expander ? I guess nothing yet as we are updating the token list atm
+// 			}
+// 			if (both_parts.to_verif != NULL && both_parts.to_verif[0] != '=')
+// 				check_export(both_parts.to_verif, p1, p2, tokens); //here the list should be updated already
+// 		}
+// 	}
+	
+// }
+
+- things not tackled by the expander :
+echo $USER= /solution OK : if none of prev token value is export then no splitting at the =
+var="$=something wrong"  
+var="        word       word" OK ->/ solution in export just creating a copy deleting the spaces should delete the spaces and only leave 1 between each word also no spaces at the start
+
+var="COMMAND with space" - $var -> just fucked up
+
+
+
+if the next string is not a space and export is not one of the previous token re
+
+- fix the signals
+- update all of the exit statuses
+- norminette tokenizer : ft_append_word 
+- check with relative and absolute path : how does it work , where should our builtins go in the path
+- pipes -> Therese
+- var="$=something wrong" 
+

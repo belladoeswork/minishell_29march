@@ -1,0 +1,16 @@
+seg fault for command $USER > [1]    64638 segmentation fault  ./lumumbash
+echo $VAR > does not return anything
+check exit function : seg faulting at line 	exit(exit_s); > Exception has occurred: Exception
+EXC_BAD_ACCESS (code=1, address=0x20)
+
+
+
+Error handling for dup2 and close calls: These system calls can fail, and you should check their return values. If they fail, you should handle the error appropriately.
+
+Error handling for fork: You should check if fork fails and handle the error if it does.
+
+Error handling for open: You should check if open fails and handle the error if it does.
+
+Error handling for access: You should check if access fails and handle the error if it does.
+
+Error handling for execve: You should check if execve fails and handle the error if it does.

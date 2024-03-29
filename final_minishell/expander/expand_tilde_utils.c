@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_tilde_utils.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aguede <aguede@student.42berlin.de>        +#+  +:+       +#+        */
+/*   By: tasha <tasha@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 11:57:12 by aguede            #+#    #+#             */
-/*   Updated: 2024/03/29 11:57:56 by aguede           ###   ########.fr       */
+/*   Updated: 2024/03/30 01:14:31 by tasha            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,13 @@
 int	count_tildes(char *str)
 {
 	int		count;
-	int		j;
+	// int		j;
 	int		i;
 	char	*strdup;
 
 	count = 0;
 	strdup = ft_strdup(str);
-	j = 0;
+	// j = 0;
 	i = 0;
 	if (strdup[i] == '~' && ((ft_isspace(strdup[i + 1])) || strdup[i + 1] == ':'
 			|| strdup[i + 1] == '/' || strdup[i + 1] == '\0'))

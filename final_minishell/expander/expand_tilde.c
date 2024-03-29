@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_tilde.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aguede <aguede@student.42berlin.de>        +#+  +:+       +#+        */
+/*   By: tasha <tasha@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 10:26:12 by aguede            #+#    #+#             */
-/*   Updated: 2024/03/29 12:47:13 by aguede           ###   ########.fr       */
+/*   Updated: 2024/03/30 01:14:15 by tasha            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,15 +110,15 @@ char	*expand_tilde(char *str, char **p1, char **p2)
 	char	*str_tilde;
 	int		expanded_len;
 	char	*str_expanded;
-	int		l;
-	int		k;
+	// int		l;
+	// int		k;
 
 	str_tilde = ft_search(p1, p2, "HOME");
 	expanded_len = (ft_strlen(str_tilde) * count_tildes(str)) + ft_strlen(str)
 		- count_tildes(str) + 1;
 	str_expanded = ft_calloc(expanded_len, sizeof(char));
-	l = 0;
-	k = 0;
+	// l = 0;
+	// k = 0;
 	str_expanded = ft_replace(str, str_tilde, str_expanded);
 	return (free(str_tilde), str_expanded);
 }

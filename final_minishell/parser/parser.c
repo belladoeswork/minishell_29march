@@ -4,7 +4,8 @@ t_node	*ft_parse(t_minishell *minishell)
 {
 	t_node	*ast;
 
-	minishell->current_token = minishell->tokens;
+	if (minishell->tokens != NULL)
+		minishell->current_token = minishell->tokens;
 	ast = ft_expression(minishell);
 	if (minishell->current_token)
 	{

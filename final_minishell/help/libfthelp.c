@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libfthelp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbella-n <tbella-n@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tasha <tasha@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 18:58:46 by tbella-n          #+#    #+#             */
-/*   Updated: 2024/03/26 19:00:02 by tbella-n         ###   ########.fr       */
+/*   Updated: 2024/03/30 01:58:53 by tasha            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,6 @@ void	ft_putstr_fd(char *s, int fd)
 	if (s)
 	{
 		while (*s)
-		{
 			ft_putchar_fd(*s++, fd);
-		}
 	}
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbella-n <tbella-n@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tasha <tasha@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 17:16:27 by tbella-n          #+#    #+#             */
-/*   Updated: 2024/03/26 18:55:30 by tbella-n         ###   ########.fr       */
+/*   Updated: 2024/03/30 01:40:58 by tasha            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,19 +21,34 @@ int	ft_get_exit_status(int status)
 
 static void	child_process_left(t_node *tree, int *pfds, t_minishell *minishell)
 {
-	ft_safe_close(pfds[0]);
-	ft_safe_dup2(pfds[1], STDOUT_FILENO);
-	ft_safe_close(pfds[1]);
+	close(pfds[0]);
+	dup2(pfds[1], STDOUT_FILENO);
+	close(pfds[1]);
 	ft_exec_node(tree->left, true, minishell);
 	exit(EXIT_FAILURE);
 }
 
 static void	child_process_right(t_node *tree, int *pfds, t_minishell *minishell)
 {
-	ft_safe_close(pfds[1]);
-	ft_safe_dup2(pfds[0], STDIN_FILENO);
-	ft_safe_close(pfds[0]);
-	ft_exec_node(tree->right, true, minishell);
+	char	buffer[1024];
+	ssize_t	count;
+
+	close(pfds[1]);
+	if (strcmp(tree->right->split_args[0], "echo") == 0)
+	{
+		count = read(pfds[0], buffer, sizeof(buffer) - 1);
+		if (count > 0)
+		{
+			buffer[count] = '\0';
+			printf("%s\n", buffer);
+		}
+	}
+	else
+	{
+		dup2(pfds[0], STDIN_FILENO);
+		ft_exec_node(tree->right, true, minishell);
+	}
+	close(pfds[0]);
 	exit(EXIT_FAILURE);
 }
 
@@ -47,16 +62,12 @@ static int	ft_exec_pipeline(t_node *tree, t_minishell *minishell)
 	pipe(pfds);
 	pid_left = fork();
 	if (pid_left == 0)
-	{
 		child_process_left(tree, pfds, minishell);
-	}
 	pid_right = fork();
 	if (pid_right == 0)
-	{
 		child_process_right(tree, pfds, minishell);
-	}
-	ft_safe_close(pfds[0]);
-	ft_safe_close(pfds[1]);
+	close(pfds[0]);
+	close(pfds[1]);
 	waitpid(pid_left, &status, 0);
 	waitpid(pid_right, &status, 0);
 	return (ft_get_exit_status(status));

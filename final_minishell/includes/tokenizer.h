@@ -16,6 +16,17 @@ typedef enum
 	TOKEN_HEREDOC,                   // <<
 	TOKEN_NL                         // \n
 }					t_token_type;
+
+typedef struct {
+    char *TOKEN_WORD;
+    char *TOKEN_PIPE;
+    char *TOKEN_INPUT_REDIRECTION;
+    char *TOKEN_OUTPUT_REDIRECTION;
+    char *TOKEN_APPEND_OUTPUT_REDIRECTION;
+    char *TOKEN_HEREDOC;
+    char *TOKEN_NL;
+} TokenTypeStrings;
+
 typedef struct s_token
 {
 	t_token_type	type;
@@ -73,6 +84,8 @@ int					ft_handle_separator(char **line_ptr, t_token **token_list);
 int					ft_append_word(char **line_ptr, t_token **token_list);
 void				ft_free_token(t_token *token);
 t_token				*ft_tokenization_handler(char *line);
+int ft_handle_space_or_separator(char **line, t_token **token_list);
+int ft_process_token(char **line, t_token **token_list);
 // tokenizer.c
 t_token				*ft_tokenize(char *input_line);
 

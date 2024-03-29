@@ -15,7 +15,6 @@ void	ft_clear_token_list(t_token **list)
 			current_node->value = NULL;
 		}
 		free(current_node);
-		// current_node = NULL;
 		current_node = next;
 	}
 	*list = NULL;
@@ -28,9 +27,7 @@ int	ft_token_list_add_back(t_token **lst, t_token *new_token)
 
 	counter = 0;
 	if (!new_token || new_token->next)
-	{
 		return (0);
-	}
 	if (!*lst)
 	{
 		*lst = new_token;

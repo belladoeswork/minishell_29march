@@ -45,9 +45,9 @@ void print_lumumbash() {
 }
 void	ft_print_tokens(t_token *token)
 {
-	int	i;
+	// int	i;
 
-	i = 0;
+	// i = 0;
 	while(token != NULL)
 	{
 		printf("token value is %s\n", token->value);

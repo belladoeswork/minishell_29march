@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   handlers.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: aguede <aguede@student.42berlin.de>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/03/29 20:45:31 by aguede            #+#    #+#             */
+/*   Updated: 2024/03/29 21:09:54 by aguede           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "lumumbash.h"
 
 int	ft_append_separator(t_token_type type, char **line_ptr,
@@ -73,51 +85,58 @@ int	ft_handle_separator(char **line_ptr, t_token **token_list)
 	*line_ptr += length;
 	return (length);
 }
+typedef struct s_integers
+{
+	int	i;
+	int	j;
+}		t_integers;
+
+char	*ft_create_word(char *line, char *word, int in_quotes, t_integers *ints)
+{
+	while (line[ints->i])
+	{
+		if (line[ints->i] == '\\' && line[ints->i + 1])
+			word[ints->j++] = line[++ints->i];
+		else if (line[ints->i] == '"')
+		{
+			if (in_quotes)
+			{
+				if (in_quotes == line[ints->i])
+					in_quotes = 0;
+			}
+			else
+				in_quotes = line[ints->i];
+			word[ints->j++] = line[ints->i];
+		}
+		else if (!in_quotes && (line[ints->i] == '<' || line[ints->i] == '>'
+				|| line[ints->i] == '|' || line[ints->i] == ' '))
+			break ;
+		else
+			word[ints->j++] = line[ints->i];
+		ints->i++;
+	}
+	return (word[ints->j] = '\0', word);
+}
 
 int	ft_append_word(char **line_ptr, t_token **token_list)
 {
-	int		i;
-	char	*line;
-	int		in_quotes;
-	char	*word;
-	int		j;
+	t_integers	ints;
+	char		*line;
+	int			in_quotes;
+	char		*word;
 
-	i = 0;
 	line = *line_ptr;
 	in_quotes = 0;
 	word = malloc(ft_strlen(line) + 1);
 	if (!word)
 		return (0);
-	j = 0;
-	while (line[i])
-	{
-		if (line[i] == '\\' && line[i + 1])
-			word[j++] = line[++i];
-		else if (line[i] == '"')
-		{
-			if (in_quotes)
-			{
-				if (in_quotes == line[i])
-					in_quotes = 0;
-			}
-			else
-				in_quotes = line[i];
-			word[j++] = line[i];
-		}
-		else if (!in_quotes && (line[i] == '<' || line[i] == '>'
-				|| line[i] == '|' || line[i] == ' '))
-			break ;
-		else
-			word[j++] = line[i];
-		i++;
-	}
-	word[j] = '\0';
+	word = ft_create_word(line, word, in_quotes, &ints);
 	if (!ft_token_list_add_back(token_list, ft_new_token(word, TOKEN_WORD)))
 	{
 		free(word);
 		return (0);
 	}
-	*line_ptr += i;
+	*line_ptr += ints.i;
 	return (1);
 }
 
@@ -144,9 +163,30 @@ t_token	*ft_tokenization_handler(char *line)
 			error = !ft_append_word(&line, &token_list);
 	}
 	if (error)
-	{
-		ft_clear_token_list(&token_list);
-		return (NULL);
-	}
+		return (ft_clear_token_list(&token_list), NULL);
 	return (token_list);
 }
+
+	// while (line[i])
+	// {
+	// 	if (line[i] == '\\' && line[i + 1])
+	// 		word[j++] = line[++i];
+	// 	else if (line[i] == '"')
+	// 	{
+	// 		if (in_quotes)
+	// 		{
+	// 			if (in_quotes == line[i])
+	// 				in_quotes = 0;
+	// 		}
+	// 		else
+	// 			in_quotes = line[i];
+	// 		word[j++] = line[i];
+	// 	}
+	// 	else if (!in_quotes && (line[i] == '<' || line[i] == '>'
+	// 			|| line[i] == '|' || line[i] == ' '))
+	// 		break ;
+	// 	else
+	// 		word[j++] = line[i];
+	// 	i++;
+	// }
+	// word[j] = '\0';

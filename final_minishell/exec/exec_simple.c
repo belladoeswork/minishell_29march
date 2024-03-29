@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_simple.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aguede <aguede@student.42berlin.de>        +#+  +:+       +#+        */
+/*   By: tasha <tasha@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 17:15:54 by tbella-n          #+#    #+#             */
-/*   Updated: 2024/03/28 18:14:26 by aguede           ###   ########.fr       */
+/*   Updated: 2024/03/30 03:05:23 by tasha            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	ft_exec_builtin(char **args, t_minishell *minishell)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	printf("exec_builtin: Executing command - %s\n", args[0]);
@@ -39,38 +39,44 @@ int	ft_exec_builtin(char **args, t_minishell *minishell)
 int	ft_exec_builtin_cmd(t_node *node, bool piped, t_minishell *minishell)
 {
 	int	tmp_status;
+	int	original_stdin;
+	int	original_stdout;
 
+	original_stdin = dup(STDIN_FILENO);
+	original_stdout = dup(STDOUT_FILENO);
 	tmp_status = ft_check_redir(node);
 	if (tmp_status != SUCCESS)
 	{
-		ft_reset_stds(piped);
+		ft_reset_stds(original_stdin, original_stdout, piped);
 		printf("exec_simple_cmd: Redirection check failed\n");
 		return (GENERAL);
 	}
 	if (ft_strcmp(node->split_args[0], "env") == 0)
-	{
 		tmp_status = ft_env(minishell->environ);
-	}
 	else
-	{
 		tmp_status = ft_exec_builtin(node->split_args, minishell);
-	}
-	ft_reset_stds(piped);
+	ft_reset_stds(original_stdin, original_stdout, piped);
 	return (tmp_status);
 }
+
 
 int	ft_exec_non_builtin_cmd(t_node *node, bool piped)
 {
 	int	tmp_status;
+	int	original_stdin;
+	int	original_stdout;
 
+	original_stdin = dup(STDIN_FILENO);
+	original_stdout = dup(STDOUT_FILENO);
 	tmp_status = ft_check_redir(node);
 	if (tmp_status != SUCCESS)
 	{
-		ft_reset_stds(piped);
+		ft_reset_stds(original_stdin, original_stdout, piped);
 		printf("exec_simple_cmd: Redirection check failed\n");
 		return (GENERAL);
 	}
 	tmp_status = ft_exec_child(node->split_args);
+	ft_reset_stds(original_stdin, original_stdout, piped);
 	return (tmp_status);
 }
 

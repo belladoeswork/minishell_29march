@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aguede <aguede@student.42berlin.de>        +#+  +:+       +#+        */
+/*   By: tasha <tasha@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 21:06:35 by aguede            #+#    #+#             */
-/*   Updated: 2024/03/29 17:11:28 by aguede           ###   ########.fr       */
+/*   Updated: 2024/03/30 01:12:30 by tasha            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,12 +77,12 @@ void	ft_modif_env_var(t_lists_env envi, char *key, char *val,
 		t_minishell *minishell)
 {
 	int		i;
-	int		k;
+	// int		k;
 	char	*key_update;
 	char	**new_environ;
 
 	i = 0;
-	k = 0;
+	// k = 0;
 	key_update = ft_create_new_key(key);
 	while (envi.p1[i] != NULL)
 	{

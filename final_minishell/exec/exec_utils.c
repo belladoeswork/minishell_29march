@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbella-n <tbella-n@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tasha <tasha@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 17:16:10 by tbella-n          #+#    #+#             */
-/*   Updated: 2024/03/26 18:32:24 by tbella-n         ###   ########.fr       */
+/*   Updated: 2024/03/30 01:37:54 by tasha            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,8 +62,6 @@ int	ft_check_redir(t_node *node)
 		tmp_redir = tmp_redir->next;
 	}
 	if (tmp_status != SUCCESS)
-	{
 		return (tmp_status);
-	}
 	return (SUCCESS);
 }

@@ -44,9 +44,9 @@ char *ft_strcpy(char *dest, const char *src);
 
 // dup errors
 
-int ft_safe_dup2(int oldfd, int newfd);
-int ft_safe_close(int fd);
-int ft_safe_open(const char *pathname, int flags, mode_t mode);
+// int ft_safe_dup2(int oldfd, int newfd);
+// int ft_safe_close(int fd);
+// int ft_safe_open(const char *pathname, int flags, mode_t mode);
 
 // builtins
 int		ft_echo(char **args);
@@ -117,7 +117,24 @@ void	ft_lstclear(t_list **lst, void (*del)(void *));
 void	ft_clean_shell(t_minishell *minishell);
 void	*ft_collector(void *ptr, bool clean);
 void	ft_free_char2(char **tofree); // added after expander
+void ft_check_result_and_exit(unsigned long long result, char *s,
+						   t_minishell *minishell);
+char *ft_get_path(char **args);
+void ft_skip_spaces_and_get_sign(char *s, int *i, int *sign);
 
+void ft_check_number_and_exit(char *s, int i, t_minishell *minishell);
+unsigned long long ft_calculate_result(char *s, int *i);
+
+int ft_append_char_to_word(char *word, int *j, char c);
+int ft_check_special_char(char c);
+int ft_add_word_to_token_list(t_token **token_list, char *word);
+int ft_allocate_word(char **word, char *line);
+
+void ft_process_tokens(t_minishell *minishell, t_node *node, int *i);
+char **ft_allocate_split_args(void);
+
+bool ft_current_token_is_op(t_minishell *minishell);
+void ft_get_next_token(t_minishell *minishell);
 
 /// newly added:
 int ft_handle_flags(char **args);
@@ -143,7 +160,8 @@ void	ft_lstadd_back(t_list **lst, t_list *new);
 t_list	*ft_lstnew(void *content);
 int		ft_check_redir(t_node *node);
 // exec_simple.c
-void	ft_reset_stds(bool piped);
+// void	ft_reset_stds(bool piped);
+void ft_reset_stds(int original_stdin, int original_stdout, bool piped);
 // int		ft_exec_builtin(char **args, t_minishell *minishell);
 bool	ft_is_builtin(char *arg);
 

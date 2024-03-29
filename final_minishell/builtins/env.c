@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbella-n <tbella-n@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tasha <tasha@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 20:26:35 by tbella-n          #+#    #+#             */
-/*   Updated: 2024/03/26 16:54:46 by tbella-n         ###   ########.fr       */
+/*   Updated: 2024/03/30 00:56:04 by tasha            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,7 @@ int	ft_count_colons(char *path)
 	while (path[i] != '\0')
 	{
 		if (path[i] == ':')
-		{
 			count++;
-		}
 		i++;
 	}
 	return (count);

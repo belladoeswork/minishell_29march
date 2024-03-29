@@ -28,7 +28,6 @@ EXEC		:=	exec/checks.c \
 				exec/pipes_exec.c \
 				exec/tree.c \
 				exec/signals.c \
-				exec/dup_error_handling.c \
 
 EXPANDER    :=  expander/expander.c \
                 expander/create_env_lists.c \
@@ -48,18 +47,23 @@ EXPANDER    :=  expander/expander.c \
 
 
 HELP		:=  help/echo_helpers.c \
-				help/env_helpers.c \
 				help/exec_helpers.c \
+				help/exit_helpers.c \
 				help/exphelp.c \
 				help/libfthelp.c \
+				help/ft_split.c \
 				help/tk_helpers.c \
 				help/libfthelpers.c \
+				help/parse_help.c \
+				help/split_tokens.c \
+				help/append_helpers.c \
 
 PARSER		:=	parser/nodes.c \
 				parser/parser_errors.c \
 				parser/parser_helpers.c \
 				parser/parser_utils.c \
 				parser/parser.c \
+				parser/redir_help.c \
 
 MINILIBFT	:=	minilibft/comp.c \
 				minilibft/issomething.c \
@@ -71,6 +75,7 @@ TOKENIZER	:=	tokenizer/tokenizer.c \
 				tokenizer/tokens_list.c \
 				tokenizer/tokens_utils.c \
 				tokenizer/tokenizer_utils.c \
+				tokenizer/handlers_utils.c \
 
 SRCS		:=	$(BUILTINS)\
 				$(HELP)\

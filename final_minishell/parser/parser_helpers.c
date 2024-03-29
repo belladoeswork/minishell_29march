@@ -1,55 +1,44 @@
 #include "lumumbash.h"
 
-static t_node	*ft_get_simple_cmd(t_minishell *minishell)
+t_node	*ft_create_node(void)
 {
-    t_node	*node;
-    int i = 0;
+	t_node	*node;
 
-    if (minishell->parse_error.type)
-        return (NULL);
-    node = ft_new_node(NODE_CMD);
-    if (!node)
-    {
-        ft_set_parse_error(MALLOC_ERROR);
-        return (NULL);
-    }
+	node = ft_new_node(NODE_CMD);
+	if (!node)
+	{
+		ft_set_parse_error(MALLOC_ERROR);
+		return (NULL);
+	}
+	return (node);
+}
 
-	node->split_args = malloc(MAX_NUM_ARGS * sizeof(char *));
-    if (!node->split_args)
-    {
-        ft_set_parse_error(MALLOC_ERROR);
-        free(node);
-        return (NULL);
-    }
+t_node	*ft_get_simple_cmd(t_minishell *minishell)
+{
+	t_node	*node;
+	char	**split_args;
+	int		i;
 
-    while (minishell->current_token
-        && (minishell->current_token->type == TOKEN_WORD
-            || ft_is_redir(minishell->current_token->type)))
-    {
-        if (minishell->current_token->type == TOKEN_WORD)
-        {
-            node->split_args[i] = minishell->current_token->value;
-            i++;
-        }
-        else if (ft_is_redir(minishell->current_token->type))
-        {
-            if (!ft_get_redir_list(&(node->redir_list), minishell))
-            {
-				free(node->split_args); // ADDED TODAY
-                free(node->args);
-                free(node);
-                return (NULL);
-            }
-        }
-        minishell->current_token = minishell->current_token->next;
-    }
-    node->split_args[i] = NULL; 
-    return (node);
+	if (minishell->parse_error.type)
+		return (NULL);
+	node = ft_create_node();
+	if (!node)
+		return (NULL);
+	split_args = ft_allocate_split_args();
+	if (!split_args)
+	{
+		free(node);
+		return (NULL);
+	}
+	node->split_args = split_args;
+	i = 0;
+	ft_process_tokens(minishell, node, &i);
+	node->split_args[i] = NULL;
+	return (node);
 }
 
 t_node	*ft_term(t_minishell *minishell)
 {
-	// t_node	*node;
 	if (minishell->parse_error.type)
 		return (NULL);
 	if (ft_current_token_is_op(minishell))
@@ -58,9 +47,7 @@ t_node	*ft_term(t_minishell *minishell)
 		return (NULL);
 	}
 	else
-	{
 		return (ft_get_simple_cmd(minishell));
-	}
 }
 
 t_node	*ft_combine(t_token_type op, t_node *left, t_node *right,

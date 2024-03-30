@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipes_exec.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tasha <tasha@student.42.fr>                +#+  +:+       +#+        */
+/*   By: tbella-n <tbella-n@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 17:16:43 by tbella-n          #+#    #+#             */
-/*   Updated: 2024/03/30 01:42:20 by tasha            ###   ########.fr       */
+/*   Updated: 2024/03/30 14:43:18 by tbella-n         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,12 @@ void	ft_execute_child_process(char **split_args)
 {
 	char	*full_path;
 
-	full_path = ft_find_command_path(split_args[0]);
+	if (strchr(split_args[0], '/'))
+	{
+		full_path = strdup(split_args[0]);
+	}
+	else
+		full_path = ft_find_command_path(split_args[0]);
 	if (full_path == NULL)
 	{
 		printf("Command '%s' not found\n", split_args[0]);
@@ -39,6 +44,7 @@ int	ft_wait_for_child(pid_t pid)
 	while (!WIFEXITED(tmp_status) && !WIFSIGNALED(tmp_status))
 		waitpid(pid, &tmp_status, WUNTRACED);
 	return (tmp_status);
+	// return (WIFEXITED(tmp_status) ? WEXITSTATUS(tmp_status) : 1);
 }
 
 int	ft_exec_child(char **split_args)

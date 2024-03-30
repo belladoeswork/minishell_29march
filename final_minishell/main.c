@@ -16,7 +16,8 @@ static void	ft_start_execution(t_minishell *minishell)
 {
 	ft_init_tree(minishell->ast);
 
-	minishell->exit_s = ft_exec_node(minishell->ast, false, minishell);
+	// minishell->exit_s = ft_exec_node(minishell->ast, false, minishell);
+	g_global.error_num = ft_exec_node(minishell->ast, false, minishell);
 	ft_clear_ast((&minishell->ast), minishell); // minishell or NULL?
 }
 
@@ -71,7 +72,8 @@ int	main(int argc, char **argv, char **env)
 		{
 			break;
 			(ft_clean_shell(&minishell),
-			ft_putstr_fd("exit\n", 1), exit(minishell.exit_s));
+			// ft_putstr_fd("exit\n", 1), exit(minishell.exit_s));
+			ft_putstr_fd("exit\n", 1), exit(g_global.error_num));
 		}
 		if (minishell.line[0])
 			add_history(minishell.line);
@@ -97,6 +99,7 @@ int	main(int argc, char **argv, char **env)
 	fflush(stdout);
 	ft_free_double_d(minishell.environ);
 	ft_collector(NULL, true);
-	return (ft_clean_shell(&minishell), minishell.exit_s);
+	// return (ft_clean_shell(&minishell), minishell.exit_s);
+	return (ft_clean_shell(&minishell), g_global.error_num);
 }
 // valgrind --leak-check=full --track-origins=yes ./lumumbash

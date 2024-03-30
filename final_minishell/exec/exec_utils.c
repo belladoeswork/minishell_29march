@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tasha <tasha@student.42.fr>                +#+  +:+       +#+        */
+/*   By: tbella-n <tbella-n@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 17:16:10 by tbella-n          #+#    #+#             */
-/*   Updated: 2024/03/30 01:37:54 by tasha            ###   ########.fr       */
+/*   Updated: 2024/03/30 22:05:15 by tbella-n         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,33 @@ t_list	*ft_lstnew(void *content)
 	return (new_node);
 }
 
+// int	ft_check_redir(t_node *node)
+// {
+// 	t_redir_node	*tmp_redir;
+// 	int				tmp_status;
+
+// 	tmp_status = SUCCESS;
+// 	tmp_redir = node->redir_list;
+// 	while (tmp_redir)
+// 	{
+// 		if (tmp_redir->type == REDIR_OUT && ft_out(tmp_redir,
+// 				&tmp_status) != SUCCESS)
+// 			return (tmp_status);
+// 		else if (tmp_redir->type == REDIR_IN && ft_in(tmp_redir,
+// 				&tmp_status) != SUCCESS)
+// 			return (tmp_status);
+// 		else if (tmp_redir->type == REDIR_APPEND && ft_append(tmp_redir,
+// 				&tmp_status) != SUCCESS)
+// 			return (tmp_status);
+// 		else if (tmp_redir->type == REDIR_HEREDOC)
+// 			(dup2(tmp_redir->here_doc, 0), close(tmp_redir->here_doc));
+// 		tmp_redir = tmp_redir->next;
+// 	}
+// 	if (tmp_status != SUCCESS)
+// 		return (tmp_status);
+// 	return (SUCCESS);
+// }
+
 int	ft_check_redir(t_node *node)
 {
 	t_redir_node	*tmp_redir;
@@ -58,10 +85,14 @@ int	ft_check_redir(t_node *node)
 				&tmp_status) != SUCCESS)
 			return (tmp_status);
 		else if (tmp_redir->type == REDIR_HEREDOC)
-			(dup2(tmp_redir->here_doc, 0), close(tmp_redir->here_doc));
-		tmp_redir = tmp_redir->next;
+		{
+			if (dup2(tmp_redir->here_doc, 0) == -1
+				|| close(tmp_redir->here_doc) == -1)
+			{
+				perror("redirection error");
+				tmp_status = GENERAL;
+			}
+		}
 	}
-	if (tmp_status != SUCCESS)
-		return (tmp_status);
 	return (SUCCESS);
 }

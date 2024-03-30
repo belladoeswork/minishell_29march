@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tasha <tasha@student.42.fr>                +#+  +:+       +#+        */
+/*   By: tbella-n <tbella-n@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 20:27:00 by tbella-n          #+#    #+#             */
-/*   Updated: 2024/03/30 01:10:31 by tasha            ###   ########.fr       */
+/*   Updated: 2024/03/30 19:57:03 by tbella-n         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,8 @@ void	ft_exit(char **args, t_minishell *minishell)
 {
 	int	exit_s;
 
-	exit_s = minishell->exit_s;
+	// exit_s = minishell->exit_s;
+	exit_s = g_global.error_num;
 	if (args[1])
 	{
 		if (args[2] && ft_isnumber(args[1]))

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_assemble.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aguede <aguede@student.42berlin.de>        +#+  +:+       +#+        */
+/*   By: tbella-n <tbella-n@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 20:47:05 by aguede            #+#    #+#             */
-/*   Updated: 2024/03/28 20:43:44 by aguede           ###   ########.fr       */
+/*   Updated: 2024/03/30 21:47:52 by tbella-n         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,8 @@ char	*ft_indeed_expand(char *to_expand, char *b_equal[], char **a_equal)
 	k = 0;
 	if (to_expand[1] == '?')
 	{
-		str = ft_itoa(errno);
+		// str = ft_itoa(errno);
+		str = ft_itoa(g_global.error_num); 
 		return (str);
 	}
 	while (b_equal[k] != NULL)

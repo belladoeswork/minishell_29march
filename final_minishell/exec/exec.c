@@ -6,7 +6,7 @@
 /*   By: tbella-n <tbella-n@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 17:16:27 by tbella-n          #+#    #+#             */
-/*   Updated: 2024/03/30 22:27:15 by tbella-n         ###   ########.fr       */
+/*   Updated: 2024/03/30 22:41:19 by tbella-n         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@ int	ft_get_exit_status(int status)
 	return (WEXITSTATUS(status));
 }
 
-static void	ft_child_process_left(t_node *tree, int *pfds, t_minishell *minishell)
+static void	ft_child_process_left(t_node *tree, int *pfds,
+		t_minishell *minishell)
 {
 	close(pfds[0]);
 	dup2(pfds[1], STDOUT_FILENO);
@@ -70,7 +71,8 @@ static int	ft_exec_pipeline(t_node *tree, t_minishell *minishell)
 	close(pfds[1]);
 	waitpid(pid_left, &status, 0);
 	waitpid(pid_right, &status, 0);
-	return (ft_get_exit_status(status));
+	g_global.error_num = ft_get_exit_status(status);
+	return (g_global.error_num);
 }
 
 int	ft_exec_node(t_node *tree, bool piped, t_minishell *minishell)

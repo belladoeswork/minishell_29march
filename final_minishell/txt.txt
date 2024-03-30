@@ -1,16 +1,88 @@
-seg fault for command $USER > [1]    64638 segmentation fault  ./lumumbash
-echo $VAR > does not return anything
-check exit function : seg faulting at line 	exit(exit_s); > Exception has occurred: Exception
-EXC_BAD_ACCESS (code=1, address=0x20)
+To track the error statuses of commands in your code, you can use the t_error struct that you have defined. This struct can hold the error number, error message, and the cause of the error. You can return this struct from your functions when an error occurs, and then use the ft_error_msg function to print the error message and return the error number.
+
+However, to be able to check the error status of the last command using $?, you need to store the error status of the last command in a global variable. This is because $? in a shell gives the exit status of the last command, and this information is typically stored in a global variable by the shell.
+
+Here is how you can do it:
+
+Define a global variable to hold the error status of the last command:
+t_error g_last_error;
 
 
+int	ft_exec_node(t_node *tree, bool piped, t_minishell *minishell)
+{
+    if (!tree)
+        return (1);
+    if (tree->type == NODE_PIPE)
+        g_last_error.no = ft_exec_pipeline(tree, minishell);
+    else
+        g_last_error.no = ft_exec_simple_cmd(tree, piped, minishell);
+    return (g_last_error.no);
+}
 
-Error handling for dup2 and close calls: These system calls can fail, and you should check their return values. If they fail, you should handle the error appropriately.
+int	ft_exec_simple_cmd(t_node *node, bool piped, t_minishell *minishell)
+{
+    // ...
+    if (ft_is_builtin(node->split_args[0]))
+    {
+        // ...
+        tmp_status = ft_exec_builtin_cmd(node, piped, minishell);
+    }
+    else
+    {
+        // ...
+        tmp_status = ft_exec_non_builtin_cmd(node, piped);
+    }
+    return (tmp_status);
+}
 
-Error handling for fork: You should check if fork fails and handle the error if it does.
+int	ft_exec_pipeline(t_node *tree, t_minishell *minishell)
+{
+    int	status;
+    // ...
+    waitpid(pid_right, &status, 0);
+    return (ft_get_exit_status(status));
+}
 
-Error handling for open: You should check if open fails and handle the error if it does.
+int	ft_exec_builtin_cmd(t_node *node, bool piped, t_minishell *minishell)
+{
+    // ...
+    if (ft_strcmp(node->split_args[0], "env") == 0)
+        tmp_status = ft_env(minishell->environ);
+    else
+        tmp_status = ft_exec_builtin(node->split_args, minishell);
+    return (tmp_status);
+}
 
-Error handling for access: You should check if access fails and handle the error if it does.
+int	ft_exec_non_builtin_cmd(t_node *node, bool piped)
+{
+    // ...
+    tmp_status = ft_exec_child(node->split_args);
+    return (tmp_status);
+}
 
-Error handling for execve: You should check if execve fails and handle the error if it does.
+int	ft_exec_child(char **split_args)
+{
+    pid_t	pid;
+
+    pid = fork();
+    if (pid == 0)
+        ft_execute_child_process(split_args);
+    else if (pid < 0)
+    {
+        perror("fork");
+        return (-1);
+    }
+    else
+        return (ft_wait_for_child(pid));
+    return (1);
+}
+
+int	ft_wait_for_child(pid_t pid)
+{
+    int	tmp_status;
+
+    waitpid(pid, &tmp_status, WUNTRACED);
+    while (!WIFEXITED(tmp_status) && !WIFSIGNALED(tmp_status))
+        waitpid(pid, &tmp_status, WUNTRACED);
+    return WIFEXITED(tmp_status) ? WEXITSTATUS(tmp_status) : 1;
+}

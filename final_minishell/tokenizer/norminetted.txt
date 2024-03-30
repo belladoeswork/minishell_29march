@@ -1,14 +1,14 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   handlers.c                                         :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: aguede <aguede@student.42berlin.de>        +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/29 20:45:31 by aguede            #+#    #+#             */
-/*   Updated: 2024/03/29 21:34:13 by aguede           ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    norminetted.txt                                    :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: aguede <aguede@student.42berlin.de>        +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2024/03/29 20:45:31 by aguede            #+#    #+#              #
+#    Updated: 2024/03/29 21:23:36 by aguede           ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
 
 #include "lumumbash.h"
 
@@ -85,7 +85,6 @@ int	ft_handle_separator(char **line_ptr, t_token **token_list)
 	*line_ptr += length;
 	return (length);
 }
-
 typedef struct s_integers
 {
 	int	i;
@@ -131,16 +130,13 @@ int	ft_append_word(char **line_ptr, t_token **token_list)
 	word = malloc(ft_strlen(line) + 1);
 	if (!word)
 		return (0);
-	ints.i = 0;
-	ints.j = 0;
 	word = ft_create_word(line, word, in_quotes, &ints);
-	printf("this is word : %s\n", word);
 	if (!ft_token_list_add_back(token_list, ft_new_token(word, TOKEN_WORD)))
 	{
 		free(word);
 		return (0);
 	}
-	printf("i is : %d\n", ints.i);
+    printf("i is : %d\n", ints.i);
 	*line_ptr += ints.i;
 	return (1);
 }
@@ -172,26 +168,28 @@ t_token	*ft_tokenization_handler(char *line)
 	return (token_list);
 }
 
-// while (line[i])
-// {
-// 	if (line[i] == '\\' && line[i + 1])
-// 		word[j++] = line[++i];
-// 	else if (line[i] == '"')
-// 	{
-// 		if (in_quotes)
-// 		{
-// 			if (in_quotes == line[i])
-// 				in_quotes = 0;
-// 		}
-// 		else
-// 			in_quotes = line[i];
-// 		word[j++] = line[i];
-// 	}
-// 	else if (!in_quotes && (line[i] == '<' || line[i] == '>'
-// 			|| line[i] == '|' || line[i] == ' '))
-// 		break ;
-// 	else
-// 		word[j++] = line[i];
-// 	i++;
-// }
-// word[j] = '\0';
+	// while (line[i])
+	// {
+	// 	if (line[i] == '\\' && line[i + 1])
+	// 		word[j++] = line[++i];
+	// 	else if (line[i] == '"')
+	// 	{
+	// 		if (in_quotes)
+	// 		{
+	// 			if (in_quotes == line[i])
+	// 				in_quotes = 0;
+	// 		}
+	// 		else
+	// 			in_quotes = line[i];
+	// 		word[j++] = line[i];
+	// 	}
+	// 	else if (!in_quotes && (line[i] == '<' || line[i] == '>'
+	// 			|| line[i] == '|' || line[i] == ' '))
+	// 		break ;
+	// 	else
+	// 		word[j++] = line[i];
+	// 	i++;
+	// }
+	// word[j] = '\0';
+
+	

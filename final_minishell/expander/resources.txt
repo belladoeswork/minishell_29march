@@ -250,10 +250,22 @@ var="COMMAND with space" - $var -> just fucked up
 
 if the next string is not a space and export is not one of the previous token re
 
-- fix the signals
-- update all of the exit statuses
-- norminette tokenizer : ft_append_word 
+- fix the signals OK 
+- update all of the exit statuses PARTIALLY OK
+- norminette tokenizer : ft_append_word OK 
 - check with relative and absolute path : how does it work , where should our builtins go in the path
 - pipes -> Therese
-- var="$=something wrong" 
+- var="$=something wrong" OK
 
+0: Success. Indicates that the command or script executed successfully without encountering any errors.
+1-125: Various error conditions. These exit statuses are typically used to indicate specific types of errors encountered during execution. For example:
+1: Catchall for general errors.
+2: Misuse of shell built-ins.
+126: Command cannot execute.
+127: Command not found.
+128-125: These are used for specific errors such as invalid arguments, invalid input, etc.
+126: Command cannot execute. This is typically used when attempting to execute a command that is not executable.
+127: Command not found. This exit status is returned when the command you are trying to execute does not exist in the PATH or is not found by the shell.
+128+n: Fatal error signal "n". This is typically used when a command is terminated by a signal. The value of "n" corresponds to the signal that caused the termination.
+130: Terminated by Ctrl+C. This exit status is returned when a command or script is terminated by the user pressing Ctrl+C.
+255: Exit status out of range. This is typically used when the exit status exceeds the range of 0-255.

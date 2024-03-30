@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split_double.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aguede <aguede@student.42berlin.de>        +#+  +:+       +#+        */
+/*   By: tbella-n <tbella-n@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 16:54:32 by aguede            #+#    #+#             */
-/*   Updated: 2024/03/29 14:08:04 by aguede           ###   ########.fr       */
+/*   Updated: 2024/03/30 22:18:15 by tbella-n         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,7 +139,8 @@ char	**ft_split_double(char **str, char c, t_token *tokens)
 	char	***new_str_str;
 	char	**final_strings;
 
-	new_str_str = ft_allocate_and_populate_new_str_str(str, c, &total_words, tokens);
+	new_str_str = ft_allocate_and_populate_new_str_str(str, c, &total_words,
+			tokens);
 	if (!new_str_str)
 		return (NULL);
 	final_strings = ft_create_final_strings(new_str_str, total_words);

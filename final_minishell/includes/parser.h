@@ -1,11 +1,22 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parser.h                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tbella-n <tbella-n@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/03/30 22:15:21 by tbella-n          #+#    #+#             */
+/*   Updated: 2024/03/30 22:15:27 by tbella-n         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef PARSER_H
 # define PARSER_H
 
 # include "lumumbash.h"
-# include "tokenizer.h" 
+# include "tokenizer.h"
 # include <stdbool.h>
 # include <termios.h>
-
 
 typedef enum e_node_type
 {
@@ -65,7 +76,7 @@ typedef struct s_minishell
 	t_token				*tokens;
 	t_token				*current_token;
 	t_node				*ast;
-	int					exit_s; // exit status
+	int exit_s; // exit status
 	t_parse_error		parse_error;
 	int					stdin;
 	int					stdout;
@@ -101,25 +112,26 @@ void					ft_clear_ast(t_node **ast, t_minishell *minishell);
 bool					ft_is_redir(t_token_type type);
 char					*ft_strjoin_with(char const *s1, char const *s2,
 							char c);
-t_node *ft_create_node(void);
-bool ft_join_args(char **args, t_minishell *minishell);
+t_node					*ft_create_node(void);
+bool					ft_join_args(char **args, t_minishell *minishell);
 // bool					ft_get_redir_list(t_redir_node **redir_list,
 // 							t_minishell *minishell);
-bool ft_get_redir_list(t_redir_node **redir_list, t_minishell *minishell,
-					   t_node *node);
+bool					ft_get_redir_list(t_redir_node **redir_list,
+							t_minishell *minishell, t_node *node);
 // parser.c
 t_node					*ft_parse(t_minishell *minishell);
 
 // parse_helpers.c
-bool ft_is_redir(t_token_type type);
-bool ft_join_args(char **args, t_minishell *minishell);
-bool ft_check_parse_error(t_minishell *minishell);
-bool ft_check_current_token(t_minishell *minishell);
-bool ft_handle_redir_error(t_redir_node **redir_list, t_node *node);
+bool					ft_is_redir(t_token_type type);
+bool					ft_join_args(char **args, t_minishell *minishell);
+bool					ft_check_parse_error(t_minishell *minishell);
+bool					ft_check_current_token(t_minishell *minishell);
+bool					ft_handle_redir_error(t_redir_node **redir_list,
+							t_node *node);
 
-//redir_help.c
-bool ft_check_token_type(t_minishell *minishell);
-bool ft_create_and_append_redir_node(t_redir_node **redir_list,
-									 t_minishell *minishell, t_token_type redir_type);
+// redir_help.c
+bool					ft_check_token_type(t_minishell *minishell);
+bool					ft_create_and_append_redir_node(t_redir_node **redir_list,
+							t_minishell *minishell, t_token_type redir_type);
 
 #endif

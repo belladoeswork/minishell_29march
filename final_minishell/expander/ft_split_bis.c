@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split_bis.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aguede <aguede@student.42berlin.de>        +#+  +:+       +#+        */
+/*   By: tbella-n <tbella-n@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 16:51:19 by aguede            #+#    #+#             */
-/*   Updated: 2024/03/29 14:20:20 by aguede           ###   ########.fr       */
+/*   Updated: 2024/03/30 22:18:27 by tbella-n         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,9 +73,9 @@ int	equal(char *tmp, t_token *tokens_original)
 	tokens = tokens_original;
 	if (*tmp != '=')
 		return (0);
-	while(tokens != NULL)
+	while (tokens != NULL)
 	{
-		if(ft_strcmp(tokens->value, "export") == 0)
+		if (ft_strcmp(tokens->value, "export") == 0)
 			return (1);
 		tokens = tokens->prev;
 	}
@@ -219,7 +219,8 @@ char	**ft_split_bis(char *str, char c, t_token *tokens)
 	lst = ft_allocate_memory(str, c, tokens);
 	if (!lst)
 		return (NULL);
-	lst = ft_fill_array(lst, tmp, ft_countword(str, c, tmp2, tokens) + 1, tokens);
+	lst = ft_fill_array(lst, tmp, ft_countword(str, c, tmp2, tokens) + 1,
+			tokens);
 	free(tmp);
 	return (lst);
 }
